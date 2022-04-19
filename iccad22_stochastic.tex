@@ -1,0 +1,95 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%\usepackage{widetext}
+\usepackage{mathtools}
+
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\graphicspath{ {./figures/} }
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{lipsum}
+\usepackage{cuted}
+\usepackage{textcomp}
+\usepackage{diffcoeff}
+\usepackage{xcolor}
+\usepackage[outdir=./]{epstopdf}
+\usepackage[ruled,vlined]{algorithm2e}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\newtheorem{proposition}{Proposition}
+
+\renewcommand{\baselinestretch}{0.83}
+
+\begin{document}
+
+
+
+\title{Coupled Electromigration and IR Drop Analysis Considering Spatial Joule Heating
+Effects}
+
+% \author{\IEEEauthorblockN{Mohammadamir Kavousi, Liang Chen and Sheldon X.-D. Tan}
+% \IEEEauthorblockA{Department of Electrical and Computer Engineering, University of California, Riverside, CA 92521 USA\\
+% mkavo003@ucr.edu, lianchen@ucr.edu, stan@ece.ucr.edu}
+% }
+
+\maketitle
+\raggedbottom
+\begin{abstract}
+  
+  Temperature gradient due to Joule heating has huge impacts on the
+  electromigration (EM) induced failure effects. However, Joule
+  heating and related thermomigration (TM) effects were less
+  investigated in the past for physics-based EM analysis for VLSI chip
+  design. In this work, we propose EM simulation tool called EMSpice2
+  simulator which is based on Emspice simulator[??]. EMSpice does not consider temperature gradient impacts. However all steps in EMSpice2,
+  from immortality checks to hydrostatic stress solver, do consider thermomigration effects. In addition EMSpce2 is equipped with MOR to speed up the simulation process by 60x. Moreover in EMSpice2, a novel post-voiding junction model
+  considering joule heating effect is proposed.  In existing model, we have to
+  partition circuit to sub-circuits to calculate post-voiding phase,
+  however in proposed method there is no need to change the topology
+  of circuit.
+EMSpice2, similar to EMSpice, starts from first principles and simultaneously considers two major interplaying physics effects in EM failure process: the hydrostatic stress and electronic current/voltage in a power grid network. this tool starts by reading the power grid layout information from
+Synopsys IC Compiler. It then removes immortal interconnect
+wires by considering both temperature-aware nucleation phase immortality and temperature-aware
+incubation phase immortality for multi-segment interconnects.
+Thereafter, a temperature-aware finite difference time domain (FDTD) solver is
+employed for stress analysis for every mortal interconnect tree
+for both nucleation and post-voiding phases. For post-voiding phase, even if voids nucleats internal junction, EMSpice2 does not change the topology of circuits. At the whole power
+grid circuit level, the EM analysis is coupled with IR drop
+analysis of a whole power grid network at each time step so
+that we can consider the interaction among stress, void growth,
+resistance change and IR drop in a single simulation framework.
+Accuracy of EMSpice2 is validated by comparing with finite
+element method based COMSOL for nucleation and post-voiding phases.
+The numerical results show
+that, compared to the recently proposed EMSpice
+simulator, EMSpice2 tool which consider TM effects is more accurate and can lead to about 60x speedup on
+average for the interconnects for both
+void nucleation and growth phases.
+  
+
+\end{abstract}
+
+\input intro.tex
+
+\input stochastic.tex
+
+\input results_iccad22.tex
+
+\section{Conclusion}
+\label{sec:conclusion}
+In this article, we have proposed a new post voiding junction model for
+transient EM stress analysis method for multi-segment
+interconnects.
+
+
+\bibliographystyle{unsrt}
+%\footnotesize
+\bibliography{../../bib/softerror,../../bib/reinforcement,../../bib/stochastic,../../bib/simulation,../../bib/modeling,../../bib/reduction,../../bib/misc,../../bib/architecture,../../bib/mscad_pub,../../bib/thermal_power,../../bib/thermal,../../bib/reliability,../../bib/embedded,../../bib/machine_learning,../../bib/physical,../../bib/neural_network.bib}
+
+\end{document}
