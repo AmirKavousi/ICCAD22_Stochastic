@@ -1,0 +1,126 @@
+\section{Introduction}
+  \label{sec:intro}
+
+Electromigration (EM) is the top reliability killer for copper-based interconnects of current integrated circuits (ICs) in 7 nm technology and below.
+The EM crisis becomes even worse as technology advances.  
+It is critical to develop more accurate EM models and less conservative EM sign-off and assessment techniques for more EM-aware design and run-time management.
+Therefore, it is important to accurately predict aging and failure effects in interconnect trees for fast sign-off analysis for today's chip design.
+% In a VLSI interconnect layout requires detailed knowledge of the stress evolutions over time, and is subject to time-varying currents and temperature. This is a challenging problem as one needs to solve the stress-based partial differential equations (PDEs) in the time domain for confined copper damascene interconnect trees for both void nucleation and void growth phases.
+Accurately predicting the EM-induced time-to-failure for a
+full-chip power grid still remains a challenging task. Existing
+mean-time-to-failure (MTTF) EM models based on Black’s
+equation [??] and Blech limit [??] only check EM effects based
+on current density in each individual segment. They are very
+simple and fast. However, such single-segment based EM
+assessment methods were shown to be less accurate in general
+for advanced VLSI nodes and the predicted time to failure can
+either be over-conservative or over-optimistic [??]–[??].
+A number of physics-based EM models and assessment techniques have been proposed for finding nucleation and
+post-voiding hydrostatic stress.
+%~\cite{HuangYu:DAC'14,SukharevHuang:ICCAD'14,ChenTan:TCAD'16,HuangTan:TCAD'16,MishraSapatnekar:2016DAC,SunDemircan:ICCAD'16,HuangSukharev:ASPDAC'16,Huang:2017int,Chatterjee:2017ed,TanAmrouch:2017int,SunCook:TCAD'18,ZhaoTan:TVLSI'18,Abbasinasab:DAC'2018,TanTahoori:Book'19}.
+~\cite{HuangYu:DAC'14,SukharevHuang:ICCAD'14,MishraSapatnekar:2016DAC,HuangSukharev:ASPDAC'16,Huang:2017int,Chatterjee:2017ed,Abbasinasab:DAC'2018,TanTahoori:Book'19}.
+
+The crux of those EM modeling problems primarily focuses on solving the partial differential equation
+(PDE) (called Korhonen's equation) of hydrostatic stress evolution.
+Many research efforts tried to build the compact models by finding the analytic
+solutions to the Korhonen’s equations with proper boundary
+conditions in both phases [??], [??], [??], [??], [??]. But
+many of those compact models can only work for restricted
+wire structures and topologies.
+Recently, more general numerical solutions such as finite
+difference time domain methods [??], [??], [??] and finite element
+method [??] have been proposed. But those existing
+methods still mainly focus on solving the Korhonen’s equation
+itself with less consideration of the inherent interaction
+between the stress, void growth, wire resistance and current
+densities change over time. No integration with commercial
+EDA flow has been demonstrated and compared on more
+practical VLSI layouts.
+To address these problems, EMSpice [??] was proposed. However EMSpice has three shortcomings. 
+(a) EMSpice did not consider the spatial temperature gradients due to Joule heating.  Recent
+  studies~\cite{Abbasinasab:DAC'2018, ChenTan:TCAD'21} show that the thermomigration 
+  (TM) (due to Joule heating) effects can be quite significant (almost in the same
+  magnitude as electromigration) due to the Joule heating
+  effects.   This situation will become even worse as technology advances
+ to smaller features and 3D stacked integration, in which higher power
+ density, more Joule heating, and larger thermal resistances due to
+ stacking will lead to even higher temperature and temperature
+ gradients across chip~\cite{Todri:TVLSI'13}.
+(b) EMSpice is not fast enough.
+(c) EMSpice can not find post-voiding stress when voids nucleate internal junctions.
+
+To address the last issue, EKM [??] was proposed to find post-voiding stress by dividing the multi-segment trees to sub-trees. 
+However, this approache is not practial in reallity and results to a new complicated problem consisting of many sub-trees with new topologies.
+
+
+% However, these approaches did not consider the gradient temperature impacts casued by the Joule heating. Existing mean time to failure (MTTF) EM models based on Black’s equation [??] and Blech limit [??] are still employed in the industry. However, these methods are empirical fitting-based models which are too conservative and scale poorly over different stressing conditions. They also fail to consider the initial stress, such as thermal and mechanical stress, which can significantly affect the time-to-failure of the interconnect. Furthermore,these models are based on measured data from a single wire segment. Practical VLSI copper damascene interconnects contain multisegment interconnect trees, defined as continuously connected wire segments within a single level of metallization terminated by diffusion barriers at vias and contacts.It was shown, experimentally, that the stress evolutions of wire segments in an interconnect tree are not independent [??]. As a result, accurately predicting the time-to-failure for a complicated interconnect tree requires detailed knowledge of the stress evolution subject to time-varying currents and temperatures.
+
+
+ % Fig.~\ref{fig:TMEM} shows the TM flux over EM flux ~\cite{Abbasinasab:2018ph}. As current densities and temperature gradients increase and widths decrease for more advance ICs, the TM effect becomes more significant and can be even larger than the EM effect. However, most of recent EM model studies do not consider the
+% temperature gradient impacts on the metal migration process.
+% Instead, most of those approaches just assume constant wire
+% temperature.
+
+%  \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=1\linewidth]{TMEM}
+%   \caption{The impact of current, width and technology scaling on (a) temperature rise, (b) the ratio
+% of TM flux to EM flux, for intermediate Interconnect. } \label{fig:TMEM}
+% \end{figure}
+
+ In this work, we try to address these issues. Our key contributions are as follows:
+ 
+ \begin{itemize}
+
+   % \item First, we propose a new spatial temperature aware EM analysis check flow, which consists of TM-aware EM immortality check. The immortality check consists of two sequential steps: the first step is to check TM-aware EM critical stress for nucleation and the second step is to check TM-aware EM void saturation volume for post-voiding phase.
+
+\item We propose Korhonen for multi-segment method, called KMulti, a new TM-aware post-voiding phase analysis for the first time. We derive the 
+new post-voiding junction model in the presence of spatial temperature gradients
+  due to Joule heating. 
+   
+ % \item First, an accurate analytical thermal model is employed to find the nonuniform temperature distribution of the interconnects due to Joule heating for both single wire and multi-segment wire.  On top of this, we implemented a closed-form expression for temperature distribution of multi-segment wires. Based on this nonuniform temperature distribution, we derive a more general and accurate analytical formula for hydrostatic stress distribution.
+
+% \item Second, we proposed a new EM-TM analysis method in which we perform the Finite Difference Method (FDM) on the coupled EM-TM PDE in multi-branch interconnects. We started with the basic and fundamental hydrostatic stress evolution PDEs and rewrote Korhonen’s equations considering temperature gradients for both the void nucleation and void growth phases with proper boundary and initial conditions for typical multi-segment wires. Then FDM is applied to discretize the coupled EM-TM PDEs into temperature-aware ODEs. Position-dependent temperature is considered in this FDM for the first time.
+
+ %\item Second,  we propose a new analytic formula for  TM-aware EM void satuartion volume estiamtion for general multi-segment interconnect wires for the first time. The new void saturation volume can determine if a wire will be immortal or not even void is nucleated in the presence of spatial temperature gradients due to Joule heating. 
+
+ \item EMSpice2 simulator, similar to EMSpice simulator, simultaneously considers the hydrostatic
+stress and electronic current/voltage in a power
+grid network. It starts from first principles
+and can solve the resulting coupled time-varying
+partial differential equations in time domain to accurately
+stress evolution in multi-segment interconnect trees for
+EM failure analysis. EMSpice2 simulator
+also couples the EM analysis with IR drop analysis at
+time domain. therefore the solver can consider the interplay
+among stress, void growth, resistance change and IR drop
+in a single simulation framework.
+
+\item EMSpice2 simulator employs a temperature-aware finite difference time
+domain (FDTD) solver for stress analysis for every
+interconnect tree for both nucleation and post-voiding
+phases. An extended Krylov subspace-based
+  reduction technique is employed to reduce the size of the
+  finite difference matrices so that they can be efficiently simulated
+  in the time domain.
+  
+ \item EMSpice2 simulator considers recently proposed TM-aware EM immortality checks. 
+ The immortality check consists of two sequential steps: the first step is to check 
+ TM-aware EM critical stress for nucleation and the second step is to check TM-aware EM void saturation volume for post-voiding phase.
+ From the experiment it can be seen that
+the majority of trees are filtered out and hence EM
+simulation is accelerated.
+ %  % We solved these new ODEs $ [ \dot \sigma (t) = A \sigma (t) + BJ(t)] $ by two different ways. First we calculate hydrostatic stress by applying traditional backward-Euler time integration method on the ODEs. Discretizing time $t$ using traditional backward-Euler method can be lengthy process and, furthermore, for calculating hydrostatic stress at time $t_n$, we have to find the stress for all $t_i$'s where $i<n$.
+ %   Third, to improve the scalability of the proposed method, an extended Krylov subspace reduction technique is applied on proposed ODEs to reduce the matrix sizes. 
+ 
+ 
+\item The accuracy of EMSpice simulator is validated by comparing
+it against finite element analysis
+(FEA) tool, COMSOL for both nucleation and the post-voiding phases.
+The comparison results show that compared to the published EM numerical simulator EMSpice,
+EMSpice2 agrees well with comsol because EMSpice2 considers temperature gradient effects. EMSpice2
+ can quickly find post-voiding hydrostatic stress when void nucleats internal junctions.
+ Stress analysis in EMSpice2 is faster than EMSpice by 60x. 
+
+  
+\end{itemize}
