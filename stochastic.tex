@@ -1,0 +1,21 @@
+\section{EMSpice2 Simulator}
+  \label{sec:emspice}
+The whole EM check flow, similar to EMSpice, mainly consists of four major
+steps: the power grid generation step from the EDA tool
+(Synopsys ICC), EM immortality filtering by considering joule heating effects, temperature-aware
+FDTD EM solver and linear network IR drop solver, and the EM check
+framework GUI. In the power grid generation step, the power
+grid information is constructed from Synopsys IC Compiler
+(ICC) during the physical synthesis process for a specific
+design. After this, the power gird and corresponding
+branch current are first passed to the temperature-aware EM immortality
+filter step (to be discussed in Section ??). Immortal trees are
+filtered out since they will never fail and resistance of these
+trees will never change. After this step, all the mortal trees
+are passed to the coupled solver step. The coupled solver consists
+of the temperature-aware FDTD for EM stress solver and linear network
+IR drop solver. In this step, hydrostatic stress on these mortal tree wires will
+be simulated accelerated by 60x using MOR and void position and volume size will be calculated all by considering thermomigration effects.
+All this information will then be passed to the EM check
+framework graphical user interface (GUI) for interactive user
+analysis.
