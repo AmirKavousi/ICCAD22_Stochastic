@@ -53,25 +53,20 @@ Effects}
   partition circuit to sub-circuits to calculate post-voiding phase,
   however in proposed method there is no need to change the topology
   of circuit.
-EMSpice2, similar to EMSpice, starts from first principles and simultaneously considers two major interplaying physics effects in EM failure process: the hydrostatic stress and electronic current/voltage in a power grid network. this tool starts by reading the power grid layout information from
-Synopsys IC Compiler. It then removes immortal interconnect
-wires by considering both temperature-aware nucleation phase immortality and temperature-aware
-incubation phase immortality for multi-segment interconnects.
-Thereafter, a temperature-aware finite difference time domain (FDTD) solver is
-employed for stress analysis for every mortal interconnect tree
-for both nucleation and post-voiding phases. For post-voiding phase, even if voids nucleats internal junction, EMSpice2 does not change the topology of circuits. At the whole power
-grid circuit level, the EM analysis is coupled with IR drop
-analysis of a whole power grid network at each time step so
-that we can consider the interaction among stress, void growth,
-resistance change and IR drop in a single simulation framework.
-Accuracy of EMSpice2 is validated by comparing with finite
-element method based COMSOL for nucleation and post-voiding phases.
-The numerical results show
-that, compared to the recently proposed EMSpice
-simulator, EMSpice2 tool which consider TM effects is more accurate and can lead to about 60x speedup on
-average for the interconnects for both
-void nucleation and growth phases.
-  
+Electromigration (EM) degradation evolves slowly towards failure,
+over a period of years. This is why EM checking methods use effective
+current models to represent the underlying circuit workload,
+which are typically constant (DC) currents over time. However,
+ignoring all input current variations around the mean can be
+risky, because low-frequency input variations can have a significant
+impact on EM, resulting in shorter than expected lifetimes.
+With the use of dark silicon and multimodal chip operation, such
+low-frequency changes inworkload are becoming increasingly common
+in modern designs. Ignoring these variations can lead to false
+positives and must be avoided. We tackle this by developing a stochastic
+effective current model for the input current waveforms
+that is easy for users to specify and which allows stochastic estimation
+of the impact of input variability on the lifetime.
 
 \end{abstract}
 
